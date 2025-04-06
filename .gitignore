@@ -1,1 +1,3 @@
-data/*.db
+data/
+!data/.keep
+node_modules/
