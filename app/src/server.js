@@ -35,6 +35,8 @@ app.set('views', path.join(__dirname, '..', 'views'));
 app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 // Middleware to parse JSON requests
 app.use(express.json());
+// This will parse form data
+app.use(express.urlencoded({ extended: true })); 
 
 // Create table if not exists
 db.prepare(`
@@ -57,6 +59,28 @@ app.get('/', (req, res) => {
 app.get('/manage', (req, res) => {
 	const computers = db.prepare('SELECT * FROM computers').all();
 	res.render('manage', { computers }); // Render the manage.ejs view
+  });
+
+// Route to add a new computer
+app.post('/add-computer', (req, res) => {
+	const { name, mac_address, ip_address, notes } = req.body;
+
+	// Check that name and mac_address are provided
+	if (!name || !mac_address) {
+	  return res.status(400).send("Computer name and MAC address are required.");
+	}
+  
+	// Insert into the database
+	db.prepare('INSERT INTO computers (name, mac_address, ip_address, notes) VALUES (?, ?, ?, ?)')
+	  .run(name, mac_address, ip_address, notes);
+	res.redirect('/manage');
+  });
+  
+// Route to delete a computer
+app.post('/delete-computer/:id', (req, res) => {
+	const { id } = req.params;
+	db.prepare('DELETE FROM computers WHERE id = ?').run(id);
+	res.redirect('/manage');
   });
 
 // Start server

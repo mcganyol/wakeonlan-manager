@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include('partials/header', { title: 'Computer List', bodyClass: 'light-mode' }) %>
 
 <h1 class="mb-4">Computer List</h1>
 
@@ -23,4 +23,5 @@
   </tbody>
 </table>
 
+<a href="/manage" class="btn btn-primary">Manage Computers</a>
 <%- include('partials/footer') %>

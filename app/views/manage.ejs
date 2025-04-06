@@ -1,0 +1,59 @@
+<%- include('partials/header', { title: 'Manage Computers', bodyClass: 'light-mode' }) %>
+
+<h1>Manage Computers</h1>
+
+<!-- Form to add a new computer -->
+<h3>Add a New Computer</h3>
+<form action="/add-computer" method="POST">
+  <div class="mb-3">
+    <label for="name" class="form-label">Computer Name</label>
+    <input type="text" class="form-control" id="name" name="name" required>
+  </div>
+  <div class="mb-3">
+    <label for="mac_address" class="form-label">MAC Address</label>
+    <input type="text" class="form-control" id="mac_address" name="mac_address" required>
+  </div>
+  <div class="mb-3">
+    <label for="ip_address" class="form-label">IP Address</label>
+    <input type="text" class="form-control" id="ip_address" name="ip_address">
+  </div>
+  <div class="mb-3">
+    <label for="notes" class="form-label">Notes</label>
+    <textarea class="form-control" id="notes" name="notes"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Add Computer</button>
+</form>
+
+<!-- Table to display the list of computers -->
+<h3 class="mt-4">Existing Computers</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>MAC Address</th>
+      <th>IP Address</th>
+      <th>Notes</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% computers.forEach(computer => { %>
+      <tr>
+        <td><%= computer.name %></td>
+        <td><%= computer.mac_address %></td>
+        <td><%= computer.ip_address %></td>
+        <td><%= computer.notes %></td>
+        <td>
+          <form action="/delete-computer/<%= computer.id %>" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<!-- Button to go back to index page -->
+<a href="/" class="btn btn-secondary">Back to Index</a>
+
+<%- include('partials/footer') %>
