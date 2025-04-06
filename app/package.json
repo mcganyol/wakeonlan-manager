@@ -2,9 +2,11 @@
   "name": "wakeonlan-web",
   "version": "0.1.0",
   "description": "Simple Wake on LAN web app with Node.js and SQLite",
+  "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+	"dev": "nodemon server.js"
   },
   "dependencies": {
     "better-sqlite3": "^9.0.0",
