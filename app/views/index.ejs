@@ -42,11 +42,17 @@
 	document.addEventListener("DOMContentLoaded", function() {
 	  <% computers.forEach(computer => { %>
 		const wakeButton<%= computer.id %> = document.getElementById('wakeButton-<%= computer.id %>');
+		
 		wakeButton<%= computer.id %>.addEventListener('click', async () => {
 		  try {
-			const response = await fetch('/api/wake/<%= computer.mac_address %>', {
-			  method: 'POST'
+			const response = await fetch('/api/wake', {
+			  method: 'POST',
+			  headers: {
+				'Content-Type': 'application/json',  // Set header to indicate JSON payload
+			  },
+			  body: JSON.stringify({ macAddress: '<%= computer.mac_address %>' })  // Send MAC address in JSON format
 			});
+  
 			const result = await response.json();
 			if (result.success) {
 			  alert('Magic packet sent to <%= computer.name %>!');
@@ -60,5 +66,5 @@
 		});
 	  <% }) %>
 	});
-</script>
+  </script>
 <%- include('partials/footer') %>

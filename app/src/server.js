@@ -101,19 +101,23 @@ app.get('/api/status/:ip', async (req, res) => {
 	}
   });
 
-// Wake endpoint
-app.post('/api/wake/:macAddress', async (req, res) => {
-	const macAddress = req.params.macAddress;
-  
-	try {
-	  await wol.wake(macAddress);
-	  console.log(`Sent magic packet to ${macAddress}`);
-	  res.json({ success: true, message: `Magic packet sent to ${macAddress}` });
-	} catch (error) {
-	  console.error('Failed to send WOL packet:', error);
-	  res.status(500).json({ success: false, message: 'Failed to send magic packet' });
-	}
-  });
+// Wake endpoint to accept MAC address from JSON body
+app.post('/api/wake', async (req, res) => {
+  const { macAddress } = req.body;  // Extract the MAC address from the JSON body
+
+  if (!macAddress) {
+    return res.status(400).json({ success: false, message: 'MAC address is required' });
+  }
+
+  try {
+    await wol.wake(macAddress);  // Send WOL magic packet
+    console.log(`Sent magic packet to ${macAddress}`);
+    res.json({ success: true, message: `Magic packet sent to ${macAddress}` });
+  } catch (error) {
+    console.error('Failed to send WOL packet:', error);
+    res.status(500).json({ success: false, message: 'Failed to send magic packet' });
+  }
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
