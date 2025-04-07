@@ -83,3 +83,22 @@ body.dark-mode {
   body.dark-mode .table tbody tr:hover {
 	background-color: #444; /* Highlight row on hover */
   }
+
+  .status-indicator {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+  }
+
+  .status-wrapper {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px; /* Space between dot and text */
+  }
+    
+  /* Optional: make status text a bit smaller and lighter */
+  .status-text {
+	font-size: 0.9rem;
+	font-weight: 500;
+  }
