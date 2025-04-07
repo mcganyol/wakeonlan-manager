@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';  // Import to get the current file URL
 import { dirname } from 'path';      // Import to get the directory name
 import path from 'path';
 import ping from 'ping';
+import wol from 'wake_on_lan';
 
 const app = express();
 const db = new Database('/data/wol.db');
@@ -97,6 +98,20 @@ app.get('/api/status/:ip', async (req, res) => {
 	} catch (error) {
 	  console.error('Ping error:', error);
 	  res.status(500).json({ online: false });
+	}
+  });
+
+// Wake endpoint
+app.post('/api/wake/:macAddress', async (req, res) => {
+	const macAddress = req.params.macAddress;
+  
+	try {
+	  await wol.wake(macAddress);
+	  console.log(`Sent magic packet to ${macAddress}`);
+	  res.json({ success: true, message: `Magic packet sent to ${macAddress}` });
+	} catch (error) {
+	  console.error('Failed to send WOL packet:', error);
+	  res.status(500).json({ success: false, message: 'Failed to send magic packet' });
 	}
   });
 

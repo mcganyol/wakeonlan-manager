@@ -3,38 +3,62 @@
 <h1 class="mb-4">Computer List</h1>
 
 <table class="table table-bordered">
-  <thead class="table-dark">
-    <tr>
-      <th>Name</th>
-	  <th>Status</th>
-	  <th>Action</th>
-      <th>MAC Address</th>
-      <th>IP Address</th>
-      <th>Notes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% computers.forEach(computer => { %>
-      <tr>
-        <td><%= computer.name %></td>
-		<td class="text-center">
-			<div class="status-wrapper">
-			  <span id="status-dot-<%= computer.id %>" class="status-indicator bg-danger"></span>
-			  <span id="status-text-<%= computer.id %>" class="status-text">Off</span>
-			</div>
-		</td>
-		<td class="text-center">
-			<button class="btn btn-wake" id="wakeButton-<%= computer.id %>">
-			  Wake
-			</button>
-		</td>
-		<td><%= computer.mac_address %></td>
-        <td><%= computer.ip_address %></td>
-        <td><%= computer.notes %></td>
-      </tr>
-    <% }) %>
-  </tbody>
+	<thead class="table-dark">
+		<tr>
+		<th>Name</th>
+		<th>Status</th>
+		<th>Action</th>
+		<th>MAC Address</th>
+		<th>IP Address</th>
+		<th>Notes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% computers.forEach(computer => { %>
+		<tr>
+			<td><%= computer.name %></td>
+			<td class="text-center">
+				<div class="status-wrapper">
+				<span id="status-dot-<%= computer.id %>" class="status-indicator bg-danger"></span>
+				<span id="status-text-<%= computer.id %>" class="status-text">Off</span>
+				</div>
+			</td>
+			<td class="text-center">
+				<button class="btn btn-wake" id="wakeButton-<%= computer.id %>">
+				Wake
+				</button>
+			</td>
+			<td><%= computer.mac_address %></td>
+			<td><%= computer.ip_address %></td>
+			<td><%= computer.notes %></td>
+		</tr>
+		<% }) %>
+	</tbody>
 </table>
 
 <a href="/manage" class="btn btn-primary">Manage Computers</a>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+	  <% computers.forEach(computer => { %>
+		const wakeButton<%= computer.id %> = document.getElementById('wakeButton-<%= computer.id %>');
+		wakeButton<%= computer.id %>.addEventListener('click', async () => {
+		  try {
+			const response = await fetch('/api/wake/<%= computer.mac_address %>', {
+			  method: 'POST'
+			});
+			const result = await response.json();
+			if (result.success) {
+			  alert('Magic packet sent to <%= computer.name %>!');
+			} else {
+			  alert('Failed to send magic packet.');
+			}
+		  } catch (error) {
+			console.error('Error waking up:', error);
+			alert('Error sending magic packet.');
+		  }
+		});
+	  <% }) %>
+	});
+</script>
 <%- include('partials/footer') %>
