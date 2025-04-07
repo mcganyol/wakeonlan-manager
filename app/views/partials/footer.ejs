@@ -26,5 +26,39 @@
 	  document.body.classList.add('dark-mode');
 	}
 </script>
+<script>
+	const computers = [
+	  <% computers.forEach((computer, idx) => { %>
+	    { id: <%= computer.id %>, ip: "<%= computer.ip_address %>" }<%= idx < computers.length - 1 ? ',' : '' %>
+	  <% }) %>
+  	];
+
+	async function checkStatus(id, ip) {
+		try {
+			const response = await fetch(`/api/status/${ip}`);
+			const data = await response.json();
+
+			const statusDot = document.getElementById(`status-dot-${id}`);
+			const statusText = document.getElementById(`status-text-${id}`);
+
+			if (data.online) {
+			statusText.textContent = 'On';
+			statusDot.classList.remove('bg-danger');
+			statusDot.classList.add('bg-success');
+			} else {
+			statusText.textContent = 'Off';
+			statusDot.classList.remove('bg-success');
+			statusDot.classList.add('bg-danger');
+			}
+		} catch (error) {
+			console.error('Status check failed', error);
+		}
+	}
+
+	computers.forEach(computer => {
+		setInterval(() => checkStatus(computer.id, computer.ip), 15000);
+		checkStatus(computer.id, computer.ip);
+	});
+</script>
 </body>
 </html>

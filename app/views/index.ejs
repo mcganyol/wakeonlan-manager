@@ -18,15 +18,15 @@
       <tr>
         <td><%= computer.name %></td>
 		<td class="text-center">
-			<!-- Example static green or red light -->
-			<span class="status-indicator bg-danger"></span> <!-- Red light for now, bg-success is green -->
-			<span class="status-text">Off</span>
+			<div class="status-wrapper">
+			  <span id="status-dot-<%= computer.id %>" class="status-indicator bg-danger"></span>
+			  <span id="status-text-<%= computer.id %>" class="status-text">Off</span>
+			</div>
 		</td>
 		<td class="text-center">
-			<div class="form-check form-switch d-inline-flex align-items-center">
-			  <input class="form-check-input" type="checkbox" role="switch" id="wakeSwitch-<%= computer.id %>">
-			  <label class="form-check-label ms-2" for="wakeSwitch-<%= computer.id %>">Wake</label>
-			</div>
+			<button class="btn btn-wake" id="wakeButton-<%= computer.id %>">
+			  Wake
+			</button>
 		</td>
 		<td><%= computer.mac_address %></td>
         <td><%= computer.ip_address %></td>

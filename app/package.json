@@ -6,7 +6,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-  	"dev": "nodemon --legacy-watch src/server.js"
+  	"dev": "nodemon --legacy-watch --ext js,json,ejs src/server.js"
   },
   "dependencies": {
     "better-sqlite3": "^9.0.0",
@@ -14,6 +14,7 @@
     "wake_on_lan": "^1.0.0",
 	"livereload": "0.9.3",
 	"connect-livereload": "0.6.1",
-	"ejs": "^3.1.10"
+	"ejs": "^3.1.10",
+	"ping": "^0.4.4"
   }
 }

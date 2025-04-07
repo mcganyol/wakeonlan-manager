@@ -89,6 +89,7 @@ body.dark-mode {
 	width: 12px;
 	height: 12px;
 	border-radius: 50%;
+	transition: background-color 0.3s ease;
   }
 
   .status-wrapper {
@@ -101,4 +102,20 @@ body.dark-mode {
   .status-text {
 	font-size: 0.9rem;
 	font-weight: 500;
+  }
+
+  .btn-wake {
+	background: linear-gradient(135deg, #00c6ff, #0072ff);
+	color: white;
+	border: none;
+	border-radius: 16px;
+	padding: 3px 6px;
+	font-size: 0.8rem;
+	font-weight: bold;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+	transition: background 0.3s ease;
+  }
+  
+  .btn-wake:hover {
+	background: linear-gradient(135deg, #0072ff, #0056b3);
   }

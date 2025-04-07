@@ -5,6 +5,7 @@ import Database from 'better-sqlite3';
 import { fileURLToPath } from 'url';  // Import to get the current file URL
 import { dirname } from 'path';      // Import to get the directory name
 import path from 'path';
+import ping from 'ping';
 
 const app = express();
 const db = new Database('/data/wol.db');
@@ -81,6 +82,22 @@ app.post('/delete-computer/:id', (req, res) => {
 	const { id } = req.params;
 	db.prepare('DELETE FROM computers WHERE id = ?').run(id);
 	res.redirect('/manage');
+  });
+
+// API endpoint to check if a computer is online
+app.get('/api/status/:ip', async (req, res) => {
+	const ip = req.params.ip;
+  
+	try {
+	  const result = await ping.promise.probe(ip, {
+		timeout: 2, // seconds
+	  });
+  
+	  res.json({ online: result.alive });
+	} catch (error) {
+	  console.error('Ping error:', error);
+	  res.status(500).json({ online: false });
+	}
   });
 
 // Start server
